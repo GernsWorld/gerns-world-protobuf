@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v4.25.1
-// source: gernsworld/mobapi/mob-api.proto
+// source: mob-api.proto
 
-package protobuf_mobapi_pb
+package gerns_world_protobuf
 
 import (
 	context "context"
@@ -133,5 +133,5 @@ var MobService_ServiceDesc = grpc.ServiceDesc{
 			ClientStreams: true,
 		},
 	},
-	Metadata: "gernsworld/mobapi/mob-api.proto",
+	Metadata: "mob-api.proto",
 }

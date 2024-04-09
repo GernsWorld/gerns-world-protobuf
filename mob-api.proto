@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package="protobuf_mobapi_pb";
+option go_package="../gerns-world-protobuf";
 package gernsworld;
 
 /**
