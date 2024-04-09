@@ -1,0 +1,117 @@
+syntax = "proto3";
+
+option go_package="protobuf_mobapi_pb";
+package gernsworld;
+
+/**
+ * .
+ */
+message RegisterMobHandler {
+  uint32 mob_type = 1;
+}
+
+/**
+ * Request a move to a specific tile. Note the server will do path finding.
+ */
+message MobMoveToAction {
+  uint32 mob_id = 1;
+  uint32 x = 2;
+  uint32 y = 3;
+}
+
+/**
+ * A mob is feeding in the specified tile. Some creatures can feed in the current tile, some in adjascent
+ * tiles, some both. Mobs must know what their feeding style is; the server will just check if it is valid and
+ * the event will not occur if it is not valid.
+ */
+message MobFeedAction {
+  uint32 mob_id = 1;
+  uint32 x = 2;
+  uint32 y = 3;
+}
+
+/**
+ * Associate an existing MOB with a registered handler.
+ */
+message RegisterMobEvent {
+	uint32 mob_id = 1;
+  uint32 mob_type = 2;
+	uint32 x = 3;
+  uint32 y = 4;
+}
+
+/**
+ * Disassociate the mob from the handler
+ */
+message DeregisterMobEvent {
+	uint32 mob_id = 1;
+}
+
+/**
+ * Gives a MOB location, a vector (if applicable), and a velocity (if applicable).
+ */
+message MobEvent {
+  uint32 mob_id = 1;
+  // Position
+  uint32 x = 2;
+  uint32 y = 3;
+  // Vector/Direction the MOB is looking, and possibly moving
+  uint32 dx = 4;
+  uint32 dy = 5;
+  // Time (in milliseconds)
+  // If v is 0 then the MOB is not moving
+  uint32 v = 6;
+}
+
+/**
+ * Send any change in surroundings to the client.
+ */
+message MapEvent {
+  // MOB the event is intended for
+  uint32 mob_id = 1;
+  // Upper left origin of update
+  uint32 x = 2;
+  uint32 y = 3;
+  // Width/height of the update
+  uint32 width = 4;
+  uint32 height = 5;
+  // Bytes in the update
+  bytes map = 6;
+}
+
+/**
+ * Event controlling the flow of time, telling the handler how quickly time is running.
+ *
+ * Note that a busy server might not be able to keep up with the suggested TPS (Ticks Per Second).
+ * We are going to have to do some thinking about how to handle this situation. The server should watch
+ * itself and adapt.
+ */
+message TimeEvent {
+  // Number of ticks per second, where a "tick" it a discrete span of time within which the server
+  // performs updates, which means a handler needs to send requests within that span of time if it
+  // wants to be executed in a timely manner.
+  uint32 tps = 1;
+}
+
+message MobStreamRequest {
+  oneof EventType {
+    MobMoveToAction move = 1;
+    RegisterMobHandler register = 2;
+    MobFeedAction feed = 3;
+  }
+}
+
+
+message MobStreamResponse {
+  oneof EventType {
+    MobEvent mobEvent = 1;      // A mob is doing something
+    MapEvent mapEvent = 2;       // There is a map update
+    RegisterMobEvent registerEvent = 3;
+    DeregisterMobEvent deregisterEvent = 4;
+    TimeEvent timeEvent = 5;
+  }
+}
+
+service MobService {
+  rpc CreateMobStream(stream MobStreamRequest) returns (stream MobStreamResponse);
+}
