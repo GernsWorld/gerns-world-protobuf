@@ -51,6 +51,7 @@ message DeregisterMobEvent {
  * Gives a MOB location, a vector (if applicable), and a velocity (if applicable).
  */
 message MobEvent {
+  // MOB performing the action
   uint32 mob_id = 1;
   // Position
   uint32 x = 2;
@@ -61,6 +62,9 @@ message MobEvent {
   // Time (in milliseconds)
   // If v is 0 then the MOB is not moving
   uint32 v = 6;
+  uint32 mob_type = 7;
+  // MOB to inform of the action
+  uint32 inform_mob_id = 8;
 }
 
 /**
