@@ -71,6 +71,21 @@ message MobEvent {
 }
 
 /**
+ * Gives a MOB location, a vector (if applicable), and a velocity (if applicable).
+ */
+message MobStatusEvent {
+  // MOB to inform of the action
+  uint32 inform_mob_id = 1;
+
+  // MOB being updated
+  uint32 mob_id = 2;
+  
+  uint32 health = 3;
+  uint32 energy = 4;
+  uint32 calories = 5;
+}
+
+/**
  * Send any change in surroundings to the client.
  */
 message MapEvent {
@@ -116,6 +131,7 @@ message MobStreamResponse {
     RegisterMobEvent registerEvent = 3;
     DeregisterMobEvent deregisterEvent = 4;
     TimeEvent timeEvent = 5;
+    MobStatusEvent mobStatusEvent = 6; // A mob's stats have changed
   }
 }
 
