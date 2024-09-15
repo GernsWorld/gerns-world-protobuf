@@ -115,6 +115,28 @@ message TimeEvent {
   uint32 tps = 1;
 }
 
+
+message EnvironmentEvent {
+  // Light is a number from 0 to 100, where 0 is pitch black and 100 is full daylight
+  uint32 light = 3;
+  // Temperature is in degrees Celsius
+  int32 temperature = 4;
+  // Wind speed in m/s
+  uint32 wind_speed = 5;
+  // Wind direction in degrees
+  uint32 wind_direction = 6;
+  // Rainfall intensity where 0 is no rain and 100 is a monsoon
+  uint32 rainfall = 7;
+  // Snowfall intensity where 0 is no snow and 100 is a blizzard
+  uint32 snowfall = 8;
+  // Cloud cover in percent, where 0 is clear skies and 100 is overcast
+  uint32 cloud_cover = 9;
+  // Fog intensity in percent, where 0 is no fog and 100 is a whiteout
+  uint32 fog = 10;
+  // Humidity in percent, where 0 is bone dry and 100 is a rainforest
+  uint32 humidity = 11;
+}
+
 message MobStreamRequest {
   oneof EventType {
     MobMoveToAction move = 1;
@@ -132,6 +154,7 @@ message MobStreamResponse {
     DeregisterMobEvent deregisterEvent = 4;
     TimeEvent timeEvent = 5;
     MobStatusEvent mobStatusEvent = 6; // A mob's stats have changed
+    EnvironmentEvent environmentEvent = 7; // Something changed in the environment
   }
 }
 
