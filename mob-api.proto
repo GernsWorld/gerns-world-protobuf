@@ -116,7 +116,7 @@ message TimeEvent {
 }
 
 
-message EnvironmentEvent {
+message EnvEvent {
   // Light is a number from 0 to 100, where 0 is pitch black and 100 is full daylight
   uint32 light = 3;
   // Temperature is in degrees Celsius
@@ -154,7 +154,7 @@ message MobStreamResponse {
     DeregisterMobEvent deregisterEvent = 4;
     TimeEvent timeEvent = 5;
     MobStatusEvent mobStatusEvent = 6; // A mob's stats have changed
-    EnvironmentEvent environmentEvent = 7; // Something changed in the environment
+    EnvEvent environmentEvent = 7; // Something changed in the environment
   }
 }
 
